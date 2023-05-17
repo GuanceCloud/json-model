@@ -1,0 +1,11 @@
+version: v1
+name: buf.build/GuanceCloud/json-model
+deps: []
+build:
+  excludes: [node_modules]
+breaking:
+  use:
+    - FILE
+lint:
+  use:
+    - DEFAULT

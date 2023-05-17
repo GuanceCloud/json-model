@@ -1,0 +1,22 @@
+{
+  "name": "guance-json-model",
+  "version": "0.0.1",
+  "description": "JSON Model for Guance Cloud Console",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuanceCloud/json-model.git"
+  },
+  "keywords": [
+    "protobuf"
+  ],
+  "author": "Guance Cloud",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/GuanceCloud/json-model/issues"
+  },
+  "homepage": "https://github.com/GuanceCloud/json-model#readme"
+}
