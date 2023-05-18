@@ -1,12 +1,24 @@
 /* eslint-disable */
+import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 
-export const protobufPackage = "proto.monitor.v1alpha1";
+export const protobufPackage = "guance.io.json.monitor.v1alpha1";
 
 export interface Monitor {
   extend: Extend | undefined;
   jsonScript: JsonScript | undefined;
   monitorName: string;
+  isDisable: boolean;
+  dashboardName?: string | undefined;
+}
+
+export interface Filter {
+  id: string;
+  logic: string;
+  name: string;
+  op: string;
+  value: string;
+  type?: string | undefined;
 }
 
 export interface Children {
@@ -21,8 +33,16 @@ export interface Children {
   namespace: string;
   q: string;
   type: string;
+  filters: Filter[];
+  queryFuncs: QueryFuncs[];
 }
 
+export interface QueryFuncs {
+  args: string[];
+  name: string;
+}
+
+/** has children */
 export interface Query {
   children: Children[];
   code: string;
@@ -30,9 +50,20 @@ export interface Query {
   funcList: string[];
   q: string;
   type: string;
+  alias: string;
+  dataSource: string;
+  field: string;
+  fieldFunc: string;
+  fieldType: string;
+  groupBy: string[];
+  groupByTime: string;
+  namespace: string;
+  filters: Filter[];
+  fill?: string | undefined;
+  queryFuncs: QueryFuncs[];
 }
 
-export interface Querylist {
+export interface QueryList {
   datasource: string;
   qtype: string;
   query: Query | undefined;
@@ -45,20 +76,27 @@ export interface Conditions {
   operator: string;
 }
 
-export interface Rules {
+export interface Rule {
   conditionLogic: string;
-  conditions: Conditions[];
+  periodNum: number;
   status: string;
+  checkCount?: number | undefined;
+  strength?: number | undefined;
+  direction?: string | undefined;
+  conditions: Conditions[];
 }
 
 export interface Extend {
   funcName: string;
-  querylist: Querylist[];
-  rules: Rules[];
+  querylist: QueryList[];
+  rules: Rule[];
+  noDataPeriodCount: number;
+  recoverNeedPeriodCount: number;
 }
 
 export interface CheckerOpt {
-  rules: Rules[];
+  rules: Rule[];
+  infoEvent?: boolean | undefined;
 }
 
 export interface Target {
@@ -72,14 +110,23 @@ export interface JsonScript {
   groupBy: string[];
   interval: number;
   message: string;
-  recoverNeedPeriodCount: number;
   targets: Target[];
   title: string;
   type: string;
+  noDataPeriodCount: number;
+  recoverNeedPeriodCount: number;
+  noDataMessage?: string | undefined;
+  noDataTitle?: string | undefined;
+  channels: Unknown[];
+  atAccounts: Unknown[];
+  atNoDataAccounts: Unknown[];
+}
+
+export interface Unknown {
 }
 
 function createBaseMonitor(): Monitor {
-  return { extend: undefined, jsonScript: undefined, monitorName: "" };
+  return { extend: undefined, jsonScript: undefined, monitorName: "", isDisable: false, dashboardName: undefined };
 }
 
 export const Monitor = {
@@ -88,10 +135,16 @@ export const Monitor = {
       Extend.encode(message.extend, writer.uint32(10).fork()).ldelim();
     }
     if (message.jsonScript !== undefined) {
-      JsonScript.encode(message.jsonScript, writer.uint32(26).fork()).ldelim();
+      JsonScript.encode(message.jsonScript, writer.uint32(18).fork()).ldelim();
     }
     if (message.monitorName !== "") {
-      writer.uint32(34).string(message.monitorName);
+      writer.uint32(26).string(message.monitorName);
+    }
+    if (message.isDisable === true) {
+      writer.uint32(32).bool(message.isDisable);
+    }
+    if (message.dashboardName !== undefined) {
+      writer.uint32(42).string(message.dashboardName);
     }
     return writer;
   },
@@ -110,19 +163,33 @@ export const Monitor = {
 
           message.extend = Extend.decode(reader, reader.uint32());
           continue;
-        case 3:
-          if (tag !== 26) {
+        case 2:
+          if (tag !== 18) {
             break;
           }
 
           message.jsonScript = JsonScript.decode(reader, reader.uint32());
           continue;
-        case 4:
-          if (tag !== 34) {
+        case 3:
+          if (tag !== 26) {
             break;
           }
 
           message.monitorName = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.isDisable = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.dashboardName = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -138,6 +205,8 @@ export const Monitor = {
       extend: isSet(object.extend) ? Extend.fromJSON(object.extend) : undefined,
       jsonScript: isSet(object.jsonScript) ? JsonScript.fromJSON(object.jsonScript) : undefined,
       monitorName: isSet(object.monitorName) ? String(object.monitorName) : "",
+      isDisable: isSet(object.isDisable) ? Boolean(object.isDisable) : false,
+      dashboardName: isSet(object.dashboardName) ? String(object.dashboardName) : undefined,
     };
   },
 
@@ -147,6 +216,8 @@ export const Monitor = {
     message.jsonScript !== undefined &&
       (obj.jsonScript = message.jsonScript ? JsonScript.toJSON(message.jsonScript) : undefined);
     message.monitorName !== undefined && (obj.monitorName = message.monitorName);
+    message.isDisable !== undefined && (obj.isDisable = message.isDisable);
+    message.dashboardName !== undefined && (obj.dashboardName = message.dashboardName);
     return obj;
   },
 
@@ -163,6 +234,131 @@ export const Monitor = {
       ? JsonScript.fromPartial(object.jsonScript)
       : undefined;
     message.monitorName = object.monitorName ?? "";
+    message.isDisable = object.isDisable ?? false;
+    message.dashboardName = object.dashboardName ?? undefined;
+    return message;
+  },
+};
+
+function createBaseFilter(): Filter {
+  return { id: "", logic: "", name: "", op: "", value: "", type: undefined };
+}
+
+export const Filter = {
+  encode(message: Filter, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.logic !== "") {
+      writer.uint32(18).string(message.logic);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.op !== "") {
+      writer.uint32(34).string(message.op);
+    }
+    if (message.value !== "") {
+      writer.uint32(42).string(message.value);
+    }
+    if (message.type !== undefined) {
+      writer.uint32(50).string(message.type);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Filter {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFilter();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.logic = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.op = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Filter {
+    return {
+      id: isSet(object.id) ? String(object.id) : "",
+      logic: isSet(object.logic) ? String(object.logic) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      op: isSet(object.op) ? String(object.op) : "",
+      value: isSet(object.value) ? String(object.value) : "",
+      type: isSet(object.type) ? String(object.type) : undefined,
+    };
+  },
+
+  toJSON(message: Filter): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.logic !== undefined && (obj.logic = message.logic);
+    message.name !== undefined && (obj.name = message.name);
+    message.op !== undefined && (obj.op = message.op);
+    message.value !== undefined && (obj.value = message.value);
+    message.type !== undefined && (obj.type = message.type);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Filter>, I>>(base?: I): Filter {
+    return Filter.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Filter>, I>>(object: I): Filter {
+    const message = createBaseFilter();
+    message.id = object.id ?? "";
+    message.logic = object.logic ?? "";
+    message.name = object.name ?? "";
+    message.op = object.op ?? "";
+    message.value = object.value ?? "";
+    message.type = object.type ?? undefined;
     return message;
   },
 };
@@ -180,6 +376,8 @@ function createBaseChildren(): Children {
     namespace: "",
     q: "",
     type: "",
+    filters: [],
+    queryFuncs: [],
   };
 }
 
@@ -217,6 +415,12 @@ export const Children = {
     }
     if (message.type !== "") {
       writer.uint32(90).string(message.type);
+    }
+    for (const v of message.filters) {
+      Filter.encode(v!, writer.uint32(98).fork()).ldelim();
+    }
+    for (const v of message.queryFuncs) {
+      QueryFuncs.encode(v!, writer.uint32(106).fork()).ldelim();
     }
     return writer;
   },
@@ -305,6 +509,20 @@ export const Children = {
 
           message.type = reader.string();
           continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.filters.push(Filter.decode(reader, reader.uint32()));
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.queryFuncs.push(QueryFuncs.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -327,6 +545,8 @@ export const Children = {
       namespace: isSet(object.namespace) ? String(object.namespace) : "",
       q: isSet(object.q) ? String(object.q) : "",
       type: isSet(object.type) ? String(object.type) : "",
+      filters: Array.isArray(object?.filters) ? object.filters.map((e: any) => Filter.fromJSON(e)) : [],
+      queryFuncs: Array.isArray(object?.queryFuncs) ? object.queryFuncs.map((e: any) => QueryFuncs.fromJSON(e)) : [],
     };
   },
 
@@ -347,6 +567,16 @@ export const Children = {
     message.namespace !== undefined && (obj.namespace = message.namespace);
     message.q !== undefined && (obj.q = message.q);
     message.type !== undefined && (obj.type = message.type);
+    if (message.filters) {
+      obj.filters = message.filters.map((e) => e ? Filter.toJSON(e) : undefined);
+    } else {
+      obj.filters = [];
+    }
+    if (message.queryFuncs) {
+      obj.queryFuncs = message.queryFuncs.map((e) => e ? QueryFuncs.toJSON(e) : undefined);
+    } else {
+      obj.queryFuncs = [];
+    }
     return obj;
   },
 
@@ -367,12 +597,107 @@ export const Children = {
     message.namespace = object.namespace ?? "";
     message.q = object.q ?? "";
     message.type = object.type ?? "";
+    message.filters = object.filters?.map((e) => Filter.fromPartial(e)) || [];
+    message.queryFuncs = object.queryFuncs?.map((e) => QueryFuncs.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseQueryFuncs(): QueryFuncs {
+  return { args: [], name: "" };
+}
+
+export const QueryFuncs = {
+  encode(message: QueryFuncs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.args) {
+      writer.uint32(10).string(v!);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryFuncs {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryFuncs();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.args.push(reader.string());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryFuncs {
+    return {
+      args: Array.isArray(object?.args) ? object.args.map((e: any) => String(e)) : [],
+      name: isSet(object.name) ? String(object.name) : "",
+    };
+  },
+
+  toJSON(message: QueryFuncs): unknown {
+    const obj: any = {};
+    if (message.args) {
+      obj.args = message.args.map((e) => e);
+    } else {
+      obj.args = [];
+    }
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueryFuncs>, I>>(base?: I): QueryFuncs {
+    return QueryFuncs.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryFuncs>, I>>(object: I): QueryFuncs {
+    const message = createBaseQueryFuncs();
+    message.args = object.args?.map((e) => e) || [];
+    message.name = object.name ?? "";
     return message;
   },
 };
 
 function createBaseQuery(): Query {
-  return { children: [], code: "", expression: "", funcList: [], q: "", type: "" };
+  return {
+    children: [],
+    code: "",
+    expression: "",
+    funcList: [],
+    q: "",
+    type: "",
+    alias: "",
+    dataSource: "",
+    field: "",
+    fieldFunc: "",
+    fieldType: "",
+    groupBy: [],
+    groupByTime: "",
+    namespace: "",
+    filters: [],
+    fill: undefined,
+    queryFuncs: [],
+  };
 }
 
 export const Query = {
@@ -394,6 +719,39 @@ export const Query = {
     }
     if (message.type !== "") {
       writer.uint32(50).string(message.type);
+    }
+    if (message.alias !== "") {
+      writer.uint32(58).string(message.alias);
+    }
+    if (message.dataSource !== "") {
+      writer.uint32(66).string(message.dataSource);
+    }
+    if (message.field !== "") {
+      writer.uint32(74).string(message.field);
+    }
+    if (message.fieldFunc !== "") {
+      writer.uint32(82).string(message.fieldFunc);
+    }
+    if (message.fieldType !== "") {
+      writer.uint32(90).string(message.fieldType);
+    }
+    for (const v of message.groupBy) {
+      writer.uint32(98).string(v!);
+    }
+    if (message.groupByTime !== "") {
+      writer.uint32(106).string(message.groupByTime);
+    }
+    if (message.namespace !== "") {
+      writer.uint32(114).string(message.namespace);
+    }
+    for (const v of message.filters) {
+      Filter.encode(v!, writer.uint32(122).fork()).ldelim();
+    }
+    if (message.fill !== undefined) {
+      writer.uint32(130).string(message.fill);
+    }
+    for (const v of message.queryFuncs) {
+      QueryFuncs.encode(v!, writer.uint32(138).fork()).ldelim();
     }
     return writer;
   },
@@ -447,6 +805,83 @@ export const Query = {
 
           message.type = reader.string();
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.alias = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.dataSource = reader.string();
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.field = reader.string();
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.fieldFunc = reader.string();
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.fieldType = reader.string();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.groupBy.push(reader.string());
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.groupByTime = reader.string();
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.namespace = reader.string();
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.filters.push(Filter.decode(reader, reader.uint32()));
+          continue;
+        case 16:
+          if (tag !== 130) {
+            break;
+          }
+
+          message.fill = reader.string();
+          continue;
+        case 17:
+          if (tag !== 138) {
+            break;
+          }
+
+          message.queryFuncs.push(QueryFuncs.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -464,6 +899,17 @@ export const Query = {
       funcList: Array.isArray(object?.funcList) ? object.funcList.map((e: any) => String(e)) : [],
       q: isSet(object.q) ? String(object.q) : "",
       type: isSet(object.type) ? String(object.type) : "",
+      alias: isSet(object.alias) ? String(object.alias) : "",
+      dataSource: isSet(object.dataSource) ? String(object.dataSource) : "",
+      field: isSet(object.field) ? String(object.field) : "",
+      fieldFunc: isSet(object.fieldFunc) ? String(object.fieldFunc) : "",
+      fieldType: isSet(object.fieldType) ? String(object.fieldType) : "",
+      groupBy: Array.isArray(object?.groupBy) ? object.groupBy.map((e: any) => String(e)) : [],
+      groupByTime: isSet(object.groupByTime) ? String(object.groupByTime) : "",
+      namespace: isSet(object.namespace) ? String(object.namespace) : "",
+      filters: Array.isArray(object?.filters) ? object.filters.map((e: any) => Filter.fromJSON(e)) : [],
+      fill: isSet(object.fill) ? String(object.fill) : undefined,
+      queryFuncs: Array.isArray(object?.queryFuncs) ? object.queryFuncs.map((e: any) => QueryFuncs.fromJSON(e)) : [],
     };
   },
 
@@ -483,6 +929,29 @@ export const Query = {
     }
     message.q !== undefined && (obj.q = message.q);
     message.type !== undefined && (obj.type = message.type);
+    message.alias !== undefined && (obj.alias = message.alias);
+    message.dataSource !== undefined && (obj.dataSource = message.dataSource);
+    message.field !== undefined && (obj.field = message.field);
+    message.fieldFunc !== undefined && (obj.fieldFunc = message.fieldFunc);
+    message.fieldType !== undefined && (obj.fieldType = message.fieldType);
+    if (message.groupBy) {
+      obj.groupBy = message.groupBy.map((e) => e);
+    } else {
+      obj.groupBy = [];
+    }
+    message.groupByTime !== undefined && (obj.groupByTime = message.groupByTime);
+    message.namespace !== undefined && (obj.namespace = message.namespace);
+    if (message.filters) {
+      obj.filters = message.filters.map((e) => e ? Filter.toJSON(e) : undefined);
+    } else {
+      obj.filters = [];
+    }
+    message.fill !== undefined && (obj.fill = message.fill);
+    if (message.queryFuncs) {
+      obj.queryFuncs = message.queryFuncs.map((e) => e ? QueryFuncs.toJSON(e) : undefined);
+    } else {
+      obj.queryFuncs = [];
+    }
     return obj;
   },
 
@@ -498,16 +967,27 @@ export const Query = {
     message.funcList = object.funcList?.map((e) => e) || [];
     message.q = object.q ?? "";
     message.type = object.type ?? "";
+    message.alias = object.alias ?? "";
+    message.dataSource = object.dataSource ?? "";
+    message.field = object.field ?? "";
+    message.fieldFunc = object.fieldFunc ?? "";
+    message.fieldType = object.fieldType ?? "";
+    message.groupBy = object.groupBy?.map((e) => e) || [];
+    message.groupByTime = object.groupByTime ?? "";
+    message.namespace = object.namespace ?? "";
+    message.filters = object.filters?.map((e) => Filter.fromPartial(e)) || [];
+    message.fill = object.fill ?? undefined;
+    message.queryFuncs = object.queryFuncs?.map((e) => QueryFuncs.fromPartial(e)) || [];
     return message;
   },
 };
 
-function createBaseQuerylist(): Querylist {
+function createBaseQueryList(): QueryList {
   return { datasource: "", qtype: "", query: undefined, uuid: "" };
 }
 
-export const Querylist = {
-  encode(message: Querylist, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryList = {
+  encode(message: QueryList, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.datasource !== "") {
       writer.uint32(10).string(message.datasource);
     }
@@ -523,10 +1003,10 @@ export const Querylist = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Querylist {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryList {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQuerylist();
+    const message = createBaseQueryList();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -567,7 +1047,7 @@ export const Querylist = {
     return message;
   },
 
-  fromJSON(object: any): Querylist {
+  fromJSON(object: any): QueryList {
     return {
       datasource: isSet(object.datasource) ? String(object.datasource) : "",
       qtype: isSet(object.qtype) ? String(object.qtype) : "",
@@ -576,7 +1056,7 @@ export const Querylist = {
     };
   },
 
-  toJSON(message: Querylist): unknown {
+  toJSON(message: QueryList): unknown {
     const obj: any = {};
     message.datasource !== undefined && (obj.datasource = message.datasource);
     message.qtype !== undefined && (obj.qtype = message.qtype);
@@ -585,12 +1065,12 @@ export const Querylist = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Querylist>, I>>(base?: I): Querylist {
-    return Querylist.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<QueryList>, I>>(base?: I): QueryList {
+    return QueryList.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Querylist>, I>>(object: I): Querylist {
-    const message = createBaseQuerylist();
+  fromPartial<I extends Exact<DeepPartial<QueryList>, I>>(object: I): QueryList {
+    const message = createBaseQueryList();
     message.datasource = object.datasource ?? "";
     message.qtype = object.qtype ?? "";
     message.query = (object.query !== undefined && object.query !== null) ? Query.fromPartial(object.query) : undefined;
@@ -687,28 +1167,48 @@ export const Conditions = {
   },
 };
 
-function createBaseRules(): Rules {
-  return { conditionLogic: "", conditions: [], status: "" };
+function createBaseRule(): Rule {
+  return {
+    conditionLogic: "",
+    periodNum: 0,
+    status: "",
+    checkCount: undefined,
+    strength: undefined,
+    direction: undefined,
+    conditions: [],
+  };
 }
 
-export const Rules = {
-  encode(message: Rules, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const Rule = {
+  encode(message: Rule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.conditionLogic !== "") {
       writer.uint32(10).string(message.conditionLogic);
     }
-    for (const v of message.conditions) {
-      Conditions.encode(v!, writer.uint32(18).fork()).ldelim();
+    if (message.periodNum !== 0) {
+      writer.uint32(16).int64(message.periodNum);
     }
     if (message.status !== "") {
       writer.uint32(26).string(message.status);
     }
+    if (message.checkCount !== undefined) {
+      writer.uint32(32).int64(message.checkCount);
+    }
+    if (message.strength !== undefined) {
+      writer.uint32(40).int64(message.strength);
+    }
+    if (message.direction !== undefined) {
+      writer.uint32(50).string(message.direction);
+    }
+    for (const v of message.conditions) {
+      Conditions.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Rules {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Rule {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseRules();
+    const message = createBaseRule();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -720,11 +1220,11 @@ export const Rules = {
           message.conditionLogic = reader.string();
           continue;
         case 2:
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.conditions.push(Conditions.decode(reader, reader.uint32()));
+          message.periodNum = longToNumber(reader.int64() as Long);
           continue;
         case 3:
           if (tag !== 26) {
@@ -732,6 +1232,34 @@ export const Rules = {
           }
 
           message.status = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.checkCount = longToNumber(reader.int64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.strength = longToNumber(reader.int64() as Long);
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.direction = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.conditions.push(Conditions.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -742,41 +1270,53 @@ export const Rules = {
     return message;
   },
 
-  fromJSON(object: any): Rules {
+  fromJSON(object: any): Rule {
     return {
       conditionLogic: isSet(object.conditionLogic) ? String(object.conditionLogic) : "",
-      conditions: Array.isArray(object?.conditions) ? object.conditions.map((e: any) => Conditions.fromJSON(e)) : [],
+      periodNum: isSet(object.periodNum) ? Number(object.periodNum) : 0,
       status: isSet(object.status) ? String(object.status) : "",
+      checkCount: isSet(object.checkCount) ? Number(object.checkCount) : undefined,
+      strength: isSet(object.strength) ? Number(object.strength) : undefined,
+      direction: isSet(object.direction) ? String(object.direction) : undefined,
+      conditions: Array.isArray(object?.conditions) ? object.conditions.map((e: any) => Conditions.fromJSON(e)) : [],
     };
   },
 
-  toJSON(message: Rules): unknown {
+  toJSON(message: Rule): unknown {
     const obj: any = {};
     message.conditionLogic !== undefined && (obj.conditionLogic = message.conditionLogic);
+    message.periodNum !== undefined && (obj.periodNum = Math.round(message.periodNum));
+    message.status !== undefined && (obj.status = message.status);
+    message.checkCount !== undefined && (obj.checkCount = Math.round(message.checkCount));
+    message.strength !== undefined && (obj.strength = Math.round(message.strength));
+    message.direction !== undefined && (obj.direction = message.direction);
     if (message.conditions) {
       obj.conditions = message.conditions.map((e) => e ? Conditions.toJSON(e) : undefined);
     } else {
       obj.conditions = [];
     }
-    message.status !== undefined && (obj.status = message.status);
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Rules>, I>>(base?: I): Rules {
-    return Rules.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<Rule>, I>>(base?: I): Rule {
+    return Rule.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Rules>, I>>(object: I): Rules {
-    const message = createBaseRules();
+  fromPartial<I extends Exact<DeepPartial<Rule>, I>>(object: I): Rule {
+    const message = createBaseRule();
     message.conditionLogic = object.conditionLogic ?? "";
-    message.conditions = object.conditions?.map((e) => Conditions.fromPartial(e)) || [];
+    message.periodNum = object.periodNum ?? 0;
     message.status = object.status ?? "";
+    message.checkCount = object.checkCount ?? undefined;
+    message.strength = object.strength ?? undefined;
+    message.direction = object.direction ?? undefined;
+    message.conditions = object.conditions?.map((e) => Conditions.fromPartial(e)) || [];
     return message;
   },
 };
 
 function createBaseExtend(): Extend {
-  return { funcName: "", querylist: [], rules: [] };
+  return { funcName: "", querylist: [], rules: [], noDataPeriodCount: 0, recoverNeedPeriodCount: 0 };
 }
 
 export const Extend = {
@@ -785,10 +1325,16 @@ export const Extend = {
       writer.uint32(10).string(message.funcName);
     }
     for (const v of message.querylist) {
-      Querylist.encode(v!, writer.uint32(18).fork()).ldelim();
+      QueryList.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.rules) {
-      Rules.encode(v!, writer.uint32(26).fork()).ldelim();
+      Rule.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.noDataPeriodCount !== 0) {
+      writer.uint32(32).int64(message.noDataPeriodCount);
+    }
+    if (message.recoverNeedPeriodCount !== 0) {
+      writer.uint32(40).int64(message.recoverNeedPeriodCount);
     }
     return writer;
   },
@@ -812,14 +1358,28 @@ export const Extend = {
             break;
           }
 
-          message.querylist.push(Querylist.decode(reader, reader.uint32()));
+          message.querylist.push(QueryList.decode(reader, reader.uint32()));
           continue;
         case 3:
           if (tag !== 26) {
             break;
           }
 
-          message.rules.push(Rules.decode(reader, reader.uint32()));
+          message.rules.push(Rule.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.noDataPeriodCount = longToNumber(reader.int64() as Long);
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.recoverNeedPeriodCount = longToNumber(reader.int64() as Long);
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -833,8 +1393,10 @@ export const Extend = {
   fromJSON(object: any): Extend {
     return {
       funcName: isSet(object.funcName) ? String(object.funcName) : "",
-      querylist: Array.isArray(object?.querylist) ? object.querylist.map((e: any) => Querylist.fromJSON(e)) : [],
-      rules: Array.isArray(object?.rules) ? object.rules.map((e: any) => Rules.fromJSON(e)) : [],
+      querylist: Array.isArray(object?.querylist) ? object.querylist.map((e: any) => QueryList.fromJSON(e)) : [],
+      rules: Array.isArray(object?.rules) ? object.rules.map((e: any) => Rule.fromJSON(e)) : [],
+      noDataPeriodCount: isSet(object.noDataPeriodCount) ? Number(object.noDataPeriodCount) : 0,
+      recoverNeedPeriodCount: isSet(object.recoverNeedPeriodCount) ? Number(object.recoverNeedPeriodCount) : 0,
     };
   },
 
@@ -842,15 +1404,18 @@ export const Extend = {
     const obj: any = {};
     message.funcName !== undefined && (obj.funcName = message.funcName);
     if (message.querylist) {
-      obj.querylist = message.querylist.map((e) => e ? Querylist.toJSON(e) : undefined);
+      obj.querylist = message.querylist.map((e) => e ? QueryList.toJSON(e) : undefined);
     } else {
       obj.querylist = [];
     }
     if (message.rules) {
-      obj.rules = message.rules.map((e) => e ? Rules.toJSON(e) : undefined);
+      obj.rules = message.rules.map((e) => e ? Rule.toJSON(e) : undefined);
     } else {
       obj.rules = [];
     }
+    message.noDataPeriodCount !== undefined && (obj.noDataPeriodCount = Math.round(message.noDataPeriodCount));
+    message.recoverNeedPeriodCount !== undefined &&
+      (obj.recoverNeedPeriodCount = Math.round(message.recoverNeedPeriodCount));
     return obj;
   },
 
@@ -861,20 +1426,25 @@ export const Extend = {
   fromPartial<I extends Exact<DeepPartial<Extend>, I>>(object: I): Extend {
     const message = createBaseExtend();
     message.funcName = object.funcName ?? "";
-    message.querylist = object.querylist?.map((e) => Querylist.fromPartial(e)) || [];
-    message.rules = object.rules?.map((e) => Rules.fromPartial(e)) || [];
+    message.querylist = object.querylist?.map((e) => QueryList.fromPartial(e)) || [];
+    message.rules = object.rules?.map((e) => Rule.fromPartial(e)) || [];
+    message.noDataPeriodCount = object.noDataPeriodCount ?? 0;
+    message.recoverNeedPeriodCount = object.recoverNeedPeriodCount ?? 0;
     return message;
   },
 };
 
 function createBaseCheckerOpt(): CheckerOpt {
-  return { rules: [] };
+  return { rules: [], infoEvent: undefined };
 }
 
 export const CheckerOpt = {
   encode(message: CheckerOpt, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.rules) {
-      Rules.encode(v!, writer.uint32(10).fork()).ldelim();
+      Rule.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.infoEvent !== undefined) {
+      writer.uint32(16).bool(message.infoEvent);
     }
     return writer;
   },
@@ -891,7 +1461,14 @@ export const CheckerOpt = {
             break;
           }
 
-          message.rules.push(Rules.decode(reader, reader.uint32()));
+          message.rules.push(Rule.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.infoEvent = reader.bool();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -903,16 +1480,20 @@ export const CheckerOpt = {
   },
 
   fromJSON(object: any): CheckerOpt {
-    return { rules: Array.isArray(object?.rules) ? object.rules.map((e: any) => Rules.fromJSON(e)) : [] };
+    return {
+      rules: Array.isArray(object?.rules) ? object.rules.map((e: any) => Rule.fromJSON(e)) : [],
+      infoEvent: isSet(object.infoEvent) ? Boolean(object.infoEvent) : undefined,
+    };
   },
 
   toJSON(message: CheckerOpt): unknown {
     const obj: any = {};
     if (message.rules) {
-      obj.rules = message.rules.map((e) => e ? Rules.toJSON(e) : undefined);
+      obj.rules = message.rules.map((e) => e ? Rule.toJSON(e) : undefined);
     } else {
       obj.rules = [];
     }
+    message.infoEvent !== undefined && (obj.infoEvent = message.infoEvent);
     return obj;
   },
 
@@ -922,7 +1503,8 @@ export const CheckerOpt = {
 
   fromPartial<I extends Exact<DeepPartial<CheckerOpt>, I>>(object: I): CheckerOpt {
     const message = createBaseCheckerOpt();
-    message.rules = object.rules?.map((e) => Rules.fromPartial(e)) || [];
+    message.rules = object.rules?.map((e) => Rule.fromPartial(e)) || [];
+    message.infoEvent = object.infoEvent ?? undefined;
     return message;
   },
 };
@@ -1002,10 +1584,16 @@ function createBaseJsonScript(): JsonScript {
     groupBy: [],
     interval: 0,
     message: "",
-    recoverNeedPeriodCount: 0,
     targets: [],
     title: "",
     type: "",
+    noDataPeriodCount: 0,
+    recoverNeedPeriodCount: 0,
+    noDataMessage: undefined,
+    noDataTitle: undefined,
+    channels: [],
+    atAccounts: [],
+    atNoDataAccounts: [],
   };
 }
 
@@ -1021,22 +1609,40 @@ export const JsonScript = {
       writer.uint32(26).string(v!);
     }
     if (message.interval !== 0) {
-      writer.uint32(32).uint32(message.interval);
+      writer.uint32(32).int64(message.interval);
     }
     if (message.message !== "") {
       writer.uint32(42).string(message.message);
     }
-    if (message.recoverNeedPeriodCount !== 0) {
-      writer.uint32(48).uint32(message.recoverNeedPeriodCount);
-    }
     for (const v of message.targets) {
-      Target.encode(v!, writer.uint32(58).fork()).ldelim();
+      Target.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     if (message.title !== "") {
-      writer.uint32(66).string(message.title);
+      writer.uint32(58).string(message.title);
     }
     if (message.type !== "") {
-      writer.uint32(74).string(message.type);
+      writer.uint32(66).string(message.type);
+    }
+    if (message.noDataPeriodCount !== 0) {
+      writer.uint32(72).int64(message.noDataPeriodCount);
+    }
+    if (message.recoverNeedPeriodCount !== 0) {
+      writer.uint32(80).int64(message.recoverNeedPeriodCount);
+    }
+    if (message.noDataMessage !== undefined) {
+      writer.uint32(90).string(message.noDataMessage);
+    }
+    if (message.noDataTitle !== undefined) {
+      writer.uint32(98).string(message.noDataTitle);
+    }
+    for (const v of message.channels) {
+      Unknown.encode(v!, writer.uint32(106).fork()).ldelim();
+    }
+    for (const v of message.atAccounts) {
+      Unknown.encode(v!, writer.uint32(114).fork()).ldelim();
+    }
+    for (const v of message.atNoDataAccounts) {
+      Unknown.encode(v!, writer.uint32(122).fork()).ldelim();
     }
     return writer;
   },
@@ -1074,7 +1680,7 @@ export const JsonScript = {
             break;
           }
 
-          message.interval = reader.uint32();
+          message.interval = longToNumber(reader.int64() as Long);
           continue;
         case 5:
           if (tag !== 42) {
@@ -1084,32 +1690,74 @@ export const JsonScript = {
           message.message = reader.string();
           continue;
         case 6:
-          if (tag !== 48) {
+          if (tag !== 50) {
             break;
           }
 
-          message.recoverNeedPeriodCount = reader.uint32();
+          message.targets.push(Target.decode(reader, reader.uint32()));
           continue;
         case 7:
           if (tag !== 58) {
             break;
           }
 
-          message.targets.push(Target.decode(reader, reader.uint32()));
+          message.title = reader.string();
           continue;
         case 8:
           if (tag !== 66) {
             break;
           }
 
-          message.title = reader.string();
+          message.type = reader.string();
           continue;
         case 9:
-          if (tag !== 74) {
+          if (tag !== 72) {
             break;
           }
 
-          message.type = reader.string();
+          message.noDataPeriodCount = longToNumber(reader.int64() as Long);
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.recoverNeedPeriodCount = longToNumber(reader.int64() as Long);
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.noDataMessage = reader.string();
+          continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.noDataTitle = reader.string();
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.channels.push(Unknown.decode(reader, reader.uint32()));
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.atAccounts.push(Unknown.decode(reader, reader.uint32()));
+          continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.atNoDataAccounts.push(Unknown.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1127,10 +1775,18 @@ export const JsonScript = {
       groupBy: Array.isArray(object?.groupBy) ? object.groupBy.map((e: any) => String(e)) : [],
       interval: isSet(object.interval) ? Number(object.interval) : 0,
       message: isSet(object.message) ? String(object.message) : "",
-      recoverNeedPeriodCount: isSet(object.recoverNeedPeriodCount) ? Number(object.recoverNeedPeriodCount) : 0,
       targets: Array.isArray(object?.targets) ? object.targets.map((e: any) => Target.fromJSON(e)) : [],
       title: isSet(object.title) ? String(object.title) : "",
       type: isSet(object.type) ? String(object.type) : "",
+      noDataPeriodCount: isSet(object.noDataPeriodCount) ? Number(object.noDataPeriodCount) : 0,
+      recoverNeedPeriodCount: isSet(object.recoverNeedPeriodCount) ? Number(object.recoverNeedPeriodCount) : 0,
+      noDataMessage: isSet(object.noDataMessage) ? String(object.noDataMessage) : undefined,
+      noDataTitle: isSet(object.noDataTitle) ? String(object.noDataTitle) : undefined,
+      channels: Array.isArray(object?.channels) ? object.channels.map((e: any) => Unknown.fromJSON(e)) : [],
+      atAccounts: Array.isArray(object?.atAccounts) ? object.atAccounts.map((e: any) => Unknown.fromJSON(e)) : [],
+      atNoDataAccounts: Array.isArray(object?.atNoDataAccounts)
+        ? object.atNoDataAccounts.map((e: any) => Unknown.fromJSON(e))
+        : [],
     };
   },
 
@@ -1146,8 +1802,6 @@ export const JsonScript = {
     }
     message.interval !== undefined && (obj.interval = Math.round(message.interval));
     message.message !== undefined && (obj.message = message.message);
-    message.recoverNeedPeriodCount !== undefined &&
-      (obj.recoverNeedPeriodCount = Math.round(message.recoverNeedPeriodCount));
     if (message.targets) {
       obj.targets = message.targets.map((e) => e ? Target.toJSON(e) : undefined);
     } else {
@@ -1155,6 +1809,26 @@ export const JsonScript = {
     }
     message.title !== undefined && (obj.title = message.title);
     message.type !== undefined && (obj.type = message.type);
+    message.noDataPeriodCount !== undefined && (obj.noDataPeriodCount = Math.round(message.noDataPeriodCount));
+    message.recoverNeedPeriodCount !== undefined &&
+      (obj.recoverNeedPeriodCount = Math.round(message.recoverNeedPeriodCount));
+    message.noDataMessage !== undefined && (obj.noDataMessage = message.noDataMessage);
+    message.noDataTitle !== undefined && (obj.noDataTitle = message.noDataTitle);
+    if (message.channels) {
+      obj.channels = message.channels.map((e) => e ? Unknown.toJSON(e) : undefined);
+    } else {
+      obj.channels = [];
+    }
+    if (message.atAccounts) {
+      obj.atAccounts = message.atAccounts.map((e) => e ? Unknown.toJSON(e) : undefined);
+    } else {
+      obj.atAccounts = [];
+    }
+    if (message.atNoDataAccounts) {
+      obj.atNoDataAccounts = message.atNoDataAccounts.map((e) => e ? Unknown.toJSON(e) : undefined);
+    } else {
+      obj.atNoDataAccounts = [];
+    }
     return obj;
   },
 
@@ -1171,13 +1845,82 @@ export const JsonScript = {
     message.groupBy = object.groupBy?.map((e) => e) || [];
     message.interval = object.interval ?? 0;
     message.message = object.message ?? "";
-    message.recoverNeedPeriodCount = object.recoverNeedPeriodCount ?? 0;
     message.targets = object.targets?.map((e) => Target.fromPartial(e)) || [];
     message.title = object.title ?? "";
     message.type = object.type ?? "";
+    message.noDataPeriodCount = object.noDataPeriodCount ?? 0;
+    message.recoverNeedPeriodCount = object.recoverNeedPeriodCount ?? 0;
+    message.noDataMessage = object.noDataMessage ?? undefined;
+    message.noDataTitle = object.noDataTitle ?? undefined;
+    message.channels = object.channels?.map((e) => Unknown.fromPartial(e)) || [];
+    message.atAccounts = object.atAccounts?.map((e) => Unknown.fromPartial(e)) || [];
+    message.atNoDataAccounts = object.atNoDataAccounts?.map((e) => Unknown.fromPartial(e)) || [];
     return message;
   },
 };
+
+function createBaseUnknown(): Unknown {
+  return {};
+}
+
+export const Unknown = {
+  encode(_: Unknown, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Unknown {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUnknown();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): Unknown {
+    return {};
+  },
+
+  toJSON(_: Unknown): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Unknown>, I>>(base?: I): Unknown {
+    return Unknown.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Unknown>, I>>(_: I): Unknown {
+    const message = createBaseUnknown();
+    return message;
+  },
+};
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var tsProtoGlobalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -1189,6 +1932,20 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
+// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

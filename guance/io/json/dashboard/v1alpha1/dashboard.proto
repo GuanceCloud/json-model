@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+package guance.io.json.dashboard.v1alpha1;
+
+message Dashboard {
+  repeated Empty dashboard_bind_set = 1;
+  Empty dashboard_extend = 2;
+  repeated Empty dashboard_mapping = 3;
+  string dashboard_owner_type = 4;
+  string dashboard_type = 5;
+  IconSet icon_set = 6;
+  Main main = 7;
+  string summary = 8;
+  repeated Taginfo tag_info = 9;
+  repeated Empty tags = 10;
+  string thumbnail = 11;
+  string title = 12;
+}
+
+message Empty {}
+
+message IconSet {
+  string icon = 1;
+  string url = 2;
+}
+
+message Colors {
+  string color = 1;
+  string key = 2;
+  string name = 3;
+}
+
+message Levels {
+  string line_color = 1;
+  string operation = 2;
+  repeated uint32 value = 3;
+}
+
+message Units {
+  string key = 1;
+  string name = 2;
+  string unit = 3;
+  repeated string units = 4;
+}
+
+message Settings {
+  string chart_type = 1;
+  repeated Colors colors = 2;
+  string compare_title = 3;
+  string compare_type = 4;
+  string current_chart_type = 5;
+  string density = 6;
+  string fixed_time = 7;
+  bool is_percent = 8;
+  bool is_time_interval = 9;
+  repeated Levels levels = 10;
+  bool open_compare = 11;
+  bool open_stack = 12;
+  bool show_field_mapping = 13;
+  bool show_line = 14;
+  bool show_title = 15;
+  string stack_type = 16;
+  string time_interval = 17;
+  string title_desc = 18;
+  repeated Units units = 19;
+  string x_axis_show_type = 20;
+}
+
+message Extend {
+  string fixed_time = 1;
+  Settings settings = 2;
+}
+
+message Group {
+  string name = 1;
+}
+
+message Pos {
+  uint32 h = 1;
+  string i = 2;
+  uint32 w = 3;
+  uint32 x = 4;
+  double y = 5;
+}
+
+message Filters {
+  string id = 1;
+  string logic = 2;
+  string name = 3;
+  string op = 4;
+  string type = 5;
+  string value = 6;
+}
+
+message QueryFuncs {
+  repeated string args = 1;
+  string name = 2;
+}
+
+message Query {
+  string alias = 1;
+  string code = 2;
+  string data_source = 3;
+  string field = 4;
+  string field_func = 5;
+  string field_type = 6;
+  string fill = 7;
+  repeated Filters filters = 8;
+  repeated string func_list = 9;
+  repeated string group_by = 10;
+  string group_by_time = 11;
+  string namespace = 12;
+  string q = 13;
+  repeated QueryFuncs query_funcs = 14;
+  string type = 15;
+}
+
+message Queries {
+  string color = 1;
+  string datasource = 2;
+  string name = 3;
+  string qtype = 4;
+  Query query = 5;
+  string type = 6;
+  string unit = 7;
+}
+
+message Charts {
+  Extend extend = 1;
+  Group group = 2;
+  string name = 3;
+  Pos pos = 4;
+  repeated Queries queries = 5;
+  string type = 6;
+}
+
+message Defaultval {
+  string label = 1;
+  string value = 2;
+}
+
+message Definition {
+  Defaultval default_val = 1;
+  string field = 2;
+  string metric = 3;
+  string object = 4;
+  string tag = 5;
+  string value = 6;
+}
+
+message Vars {
+  string code = 1;
+  string datasource = 2;
+  Definition definition = 3;
+  uint32 hide = 4;
+  string name = 5;
+  uint32 seq = 6;
+  string type = 7;
+  string value_sort = 8;
+}
+
+message Main {
+  repeated Charts charts = 1;
+  repeated string groups = 2;
+  string type = 3;
+  repeated Vars vars = 4;
+}
+
+message Taginfo {
+  string id = 1;
+  string name = 2;
+}

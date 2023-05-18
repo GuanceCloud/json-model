@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package guance.io.json.monitor.v1alpha1;
+
+message Monitor {
+  Extend extend = 1;  
+  JsonScript json_script = 2;  
+  string monitor_name = 3;  
+  bool is_disable = 4;  
+  optional string dashboard_name = 5;  
+}
+
+message Filter {
+  string id = 1;
+  string logic = 2;
+  string name = 3;
+  string op = 4;
+  string value = 5;
+  optional string type = 6;
+}
+
+message Children {
+  string alias = 1;
+  string code = 2;
+  string data_source = 3;
+  string field = 4;
+  string field_func = 5;
+  string field_type = 6;
+  repeated string group_by = 7;
+  string group_by_time = 8;
+  string namespace = 9;
+  string q = 10;
+  string type = 11;
+  repeated Filter filters = 12;
+  repeated QueryFuncs query_funcs = 13;
+}
+
+message QueryFuncs {
+  repeated string args = 1;
+  string name = 2;
+}
+
+message Query {
+  // has children
+
+  repeated Children children = 1;
+  string code = 2;
+  string expression = 3;
+  repeated string func_list = 4;
+  string q = 5;
+  string type = 6;
+  string alias = 7;
+
+  // no children
+
+  string data_source = 8;
+  string field = 9;
+  string field_func = 10;
+  string field_type = 11;
+  repeated string group_by = 12;
+  string group_by_time = 13;
+  string namespace = 14;
+  repeated Filter filters = 15;
+  optional string fill = 16;
+  repeated QueryFuncs query_funcs = 17;
+}
+
+message QueryList {
+  string datasource = 1;
+  string qtype = 2;
+  Query query = 3;
+  string uuid = 4;
+}
+
+message Conditions {
+  string alias = 1;
+  repeated string operands = 2;
+  string operator = 3;
+}
+
+message Rule {
+  string condition_logic = 1;
+  int64 period_num = 2;
+  string status = 3;
+  optional int64 check_count = 4;
+  optional int64 strength = 5;
+  optional string direction = 6;
+  repeated Conditions conditions = 7;
+}
+
+message Extend {
+  string func_name = 1;
+  repeated QueryList querylist = 2;
+  repeated Rule rules = 3;
+  int64 no_data_period_count = 4;
+  int64 recover_need_period_count = 5;
+}
+
+message CheckerOpt {
+  repeated Rule rules = 1;
+  optional bool info_event = 2;
+}
+
+message Target {
+  string alias = 1;
+  string dql = 2;
+}
+
+message JsonScript {
+  CheckerOpt checker_opt = 1;
+  string every = 2;
+  repeated string group_by = 3;
+  int64 interval = 4;
+  string message = 5;
+  repeated Target targets = 6;
+  string title = 7;
+  string type = 8;
+  int64 no_data_period_count = 9;
+  int64 recover_need_period_count = 10;
+  optional string no_data_message = 11;
+  optional string no_data_title = 12;
+  repeated Unknown channels = 13;
+  repeated Unknown at_accounts = 14;
+  repeated Unknown at_no_data_accounts = 15;
+}
+
+message Unknown {}
