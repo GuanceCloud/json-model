@@ -1,5 +1,7 @@
 # JSON Model for Guance Cloud Console
 
+**NOTICE: WORKING IN PROGRESS, DON'T USE IT IN PRODUCTION**
+
 The purpose of this repository is to store the JSON model for the Guance Cloud Console.
 
 ## Introduction

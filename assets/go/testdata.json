@@ -1,0 +1,1866 @@
+{
+  "dashboardBindSet": [],
+  "dashboardExtend": {},
+  "dashboardMapping": [],
+  "dashboardOwnerType": "node",
+  "dashboardType": "CUSTOM",
+  "iconSet": {},
+  "main": {
+    "charts": [
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "chartType": "areaLine",
+            "colorLevel": 3,
+            "colors": [
+              {
+                "color": "#19BE6B",
+                "key": "1分钟负载",
+                "name": "1分钟负载"
+              },
+              {
+                "color": "#2D8CF0",
+                "key": "15分钟负载",
+                "name": "15分钟负载"
+              },
+              {
+                "color": "#ED4014",
+                "key": "5分钟负载",
+                "name": "5分钟负载"
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "direction": "vertical",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levelArr": [
+              {
+                "color": "#71aae2",
+                "max": 100,
+                "min": 0
+              },
+              {
+                "color": "#71aae2",
+                "max": 200,
+                "min": 100
+              },
+              {
+                "color": "#71aae2",
+                "min": 200
+              }
+            ],
+            "levels": [],
+            "mainMeasurement": "1分钟负载",
+            "openCompare": false,
+            "openStack": false,
+            "rangeColor": "#1989fa",
+            "showFieldMapping": false,
+            "showLegend": false,
+            "showLine": false,
+            "showTitle": true,
+            "showTopSize": false,
+            "showTopWithMetric": "",
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "topSize": 10,
+            "units": [],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "CPU/内存"
+        },
+        "name": "CPU 负载",
+        "pos": {
+          "h": 8,
+          "i": "chrt_93907f56e88543f5b5f72555dd4d0f6b",
+          "w": 6,
+          "x": 0,
+          "y": 12
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "1分钟负载",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "load_1m_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "c6f99d00-bae4-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "d387b980-bae4-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`load_1m_Average`) AS `1分钟负载`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "5分钟负载",
+              "code": "B",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "load_5m_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "cca618f0-bae4-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "d7ef5960-bae4-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`load_5m_Average`) AS `5分钟负载`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "15分钟负载",
+              "code": "C",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "load_15m_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "cfe78850-bae4-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "dc1b4fd0-bae4-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`load_15m_Average`) AS `15分钟负载`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "isRefresh": false,
+          "settings": {
+            "alias": [],
+            "chartType": "areaLine",
+            "colors": [
+              {
+                "color": "#2D8CF0",
+                "key": "其他",
+                "name": "其他"
+              },
+              {
+                "color": "#F16B62",
+                "key": "等待IO操作",
+                "name": "等待IO操作"
+              },
+              {
+                "color": "#19BE6B",
+                "key": "用户空间",
+                "name": "用户空间"
+              },
+              {
+                "color": "#00BCD4",
+                "key": "空闲",
+                "name": "空闲"
+              },
+              {
+                "color": "#A55FD0",
+                "key": "系统空间",
+                "name": "系统空间"
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "legendPostion": "none",
+            "legendValues": "",
+            "levels": [],
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [
+              {
+                "key": "CPU 使用",
+                "name": "CPU 使用",
+                "unit": "",
+                "units": [
+                  "percent",
+                  "percent"
+                ]
+              },
+              {
+                "key": "CPU 等待",
+                "name": "CPU 等待",
+                "unit": "",
+                "units": [
+                  "percent",
+                  "percent"
+                ]
+              },
+              {
+                "key": "CPU 用户态",
+                "name": "CPU 用户态",
+                "unit": "",
+                "units": [
+                  "percent",
+                  "percent"
+                ]
+              },
+              {
+                "key": "CPU 核心态",
+                "name": "CPU 核心态",
+                "unit": "",
+                "units": [
+                  "percent",
+                  "percent"
+                ]
+              }
+            ],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "CPU/内存"
+        },
+        "name": "CPU 使用",
+        "pos": {
+          "h": 8,
+          "i": "chrt_b57a87fcf9e74182a6e8f07c93318012",
+          "w": 6,
+          "x": 6,
+          "y": 12
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "CPU 使用率",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "fill": null,
+              "fillNum": null,
+              "filters": [
+                {
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "value": "#{account_name}"
+                },
+                {
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(100 - AVG(`cpu_idle_Average`) AS `CPU 使用率`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "dql",
+              "withLabels": []
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "CPU 等待",
+              "code": "B",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "cpu_wait_Average",
+              "fieldFunc": "avg",
+              "fieldType": "",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "02b47e30-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "0c271dd0-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`cpu_wait_Average`) AS `CPU 等待`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "CPU 用户态",
+              "code": "D",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "cpu_user_Average",
+              "fieldFunc": "avg",
+              "fieldType": "",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "0a13b330-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "11fc3060-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`cpu_user_Average`) AS `CPU 用户态`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "CPU 核心态",
+              "code": "E",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "cpu_system_Average",
+              "fieldFunc": "avg",
+              "fieldType": "",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "10b0d0b0-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "15af7460-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`cpu_system_Average`) AS `CPU 核心态`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "chartType": "areaLine",
+            "colors": [
+              {
+                "color": "#EA4CA3",
+                "key": "剩余内存",
+                "name": "剩余内存"
+              },
+              {
+                "color": "#2D8CF0",
+                "key": "已用内存",
+                "name": "已用内存"
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levels": [],
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLegend": true,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [
+              {
+                "key": "剩余内存",
+                "name": "剩余内存",
+                "unit": "",
+                "units": [
+                  "digital",
+                  "B"
+                ]
+              },
+              {
+                "key": "已使用内存",
+                "name": "已使用内存",
+                "unit": "",
+                "units": [
+                  "digital",
+                  "B"
+                ]
+              },
+              {
+                "key": "总内存",
+                "name": "总内存",
+                "unit": "",
+                "units": [
+                  "digital",
+                  "B"
+                ]
+              }
+            ],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "CPU/内存"
+        },
+        "name": "内存大小",
+        "pos": {
+          "h": 8,
+          "i": "chrt_9104e8d4aeec44f59c3f551ac7735cae",
+          "w": 6,
+          "x": 12,
+          "y": 2
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "剩余内存",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "memory_freespace_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "2e71d9a0-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "934ee0e0-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`memory_freespace_Average`) AS `剩余内存`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "已使用内存",
+              "code": "B",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "memory_usedspace_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "3c75cd40-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "93dc7ae0-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`memory_usedspace_Average`) AS `已使用内存`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "总内存",
+              "code": "C",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "memory_totalspace_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "3ce4bbb0-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "945617b0-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`memory_totalspace_Average`) AS `总内存`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "chartType": "areaLine",
+            "colors": [
+              {
+                "color": "#F16B62",
+                "key": "内存使用",
+                "name": "内存使用"
+              },
+              {
+                "color": "#19BE6B",
+                "key": "剩余内存",
+                "name": "剩余内存"
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levels": [],
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLegend": true,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [
+              {
+                "key": "剩余率",
+                "name": "剩余率",
+                "unit": "",
+                "units": [
+                  "percent",
+                  "percent"
+                ]
+              },
+              {
+                "key": "使用率",
+                "name": "使用率",
+                "unit": "",
+                "units": [
+                  "percent",
+                  "percent"
+                ]
+              }
+            ],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "CPU/内存"
+        },
+        "name": "内存使用",
+        "pos": {
+          "h": 8,
+          "i": "chrt_8693618e4ff345808e683bd8d6c7edd4",
+          "w": 6,
+          "x": 18,
+          "y": 2
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "剩余率",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "memory_freeutilization_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "68c18600-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "d5c9ebe0-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`memory_freeutilization_Average`) AS `剩余率`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "使用率",
+              "code": "B",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "memory_usedutilization_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "6b5b43b0-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "d63a39e0-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`memory_usedutilization_Average`) AS `使用率`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "0": {
+              "lineColor": "lime",
+              "operation": {
+                "business": "tag, flow",
+                "key": ">=",
+                "label": ">=",
+                "support": [
+                  "number"
+                ]
+              },
+              "value": [
+                20
+              ]
+            },
+            "1": {
+              "lineColor": "#1e90ff",
+              "operation": {
+                "business": "tag, flow",
+                "key": ">=",
+                "label": ">=",
+                "support": [
+                  "number"
+                ]
+              },
+              "value": [
+                80
+              ]
+            },
+            "2": {
+              "lineColor": "#ff4500",
+              "operation": {
+                "business": "tag, flow",
+                "key": ">=",
+                "label": ">=",
+                "support": [
+                  "number"
+                ]
+              },
+              "value": [
+                100
+              ]
+            },
+            "chartType": "areaLine",
+            "colors": [],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levels": [],
+            "max": 100,
+            "min": 0,
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [
+              {
+                "key": "磁盘使用率",
+                "name": "磁盘使用率",
+                "unit": "",
+                "units": [
+                  "percent",
+                  "percent"
+                ]
+              }
+            ],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "磁盘"
+        },
+        "name": "磁盘使用率",
+        "pos": {
+          "h": 8,
+          "i": "chrt_1209c3150a594c75b225c8d75238f428",
+          "w": 6,
+          "x": 0,
+          "y": 22.5
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "磁盘使用率",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "diskusage_utilization_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "a752d3b0-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "e56c2630-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [
+                "device"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`diskusage_utilization_Average`) AS `磁盘使用率`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' } BY `device`",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "chartType": "areaLine",
+            "colors": [
+              {
+                "color": "#2D8CF0",
+                "key": "磁盘写入",
+                "name": "磁盘写入"
+              },
+              {
+                "color": "#8BC34A",
+                "key": "磁盘读取",
+                "name": "磁盘读取"
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levels": [],
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [
+              {
+                "key": "read",
+                "name": "read",
+                "unit": "",
+                "units": [
+                  "traffic",
+                  "B/S"
+                ]
+              },
+              {
+                "key": "write",
+                "name": "write",
+                "unit": "",
+                "units": [
+                  "traffic",
+                  "B/S"
+                ]
+              }
+            ],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "磁盘"
+        },
+        "name": "磁盘读写大小",
+        "pos": {
+          "h": 8,
+          "i": "chrt_e04ed6ad8a624ac7b73aa4f186991554",
+          "w": 6,
+          "x": 18,
+          "y": 22.5
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "磁盘读取",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "disk_readbytes_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "cb4abe40-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "14b78a60-bae6-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [
+                "device"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`disk_readbytes_Average`) AS `磁盘读取`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' } BY `device`",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "磁盘写入",
+              "code": "B",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "disk_writebytes_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "cf161e20-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "153063e0-bae6-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [
+                "device"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`disk_writebytes_Average`) AS `磁盘写入`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' } BY `device`",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "chartType": "areaLine",
+            "colors": [
+              {
+                "color": "#27dd88",
+                "key": "写入请求",
+                "name": "写入请求"
+              },
+              {
+                "color": "#F16B62",
+                "key": "读取请求",
+                "name": "读取请求"
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levels": [],
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "磁盘"
+        },
+        "name": "磁盘读写次数",
+        "pos": {
+          "h": 8,
+          "i": "chrt_f7eb48df617a45c8a74247f0a3c2787e",
+          "w": 6,
+          "x": 12,
+          "y": 22.5
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "读取次数",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "disk_readiops_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "b78cba20-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "001cbad0-bae6-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [
+                "device"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`disk_readiops_Average`) AS `读取次数`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' } BY `device`",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "写入次数",
+              "code": "B",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "disk_writeiops_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "b9f66720-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "00945bd0-bae6-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [
+                "device"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`disk_writeiops_Average`) AS `写入次数`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' } BY `device`",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "chartType": "areaLine",
+            "colors": [
+              {
+                "color": "#EA4CA3",
+                "key": "inode使用率",
+                "name": "inode使用率"
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levels": [],
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [
+              {
+                "key": "inode 使用率",
+                "name": "inode 使用率",
+                "unit": "",
+                "units": [
+                  "percent",
+                  "percent"
+                ]
+              }
+            ],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "磁盘"
+        },
+        "name": "inode 使用率",
+        "pos": {
+          "h": 8,
+          "i": "chrt_d5450a2515564979879f6086e0248911",
+          "w": 6,
+          "x": 6,
+          "y": 22.5
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "inode 使用率",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "fs_inodeutilization_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "9b4ad720-57f5-11ec-ab6e-9bf2b4119b76",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "f39fb550-bae5-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [
+                "device"
+              ],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`fs_inodeutilization_Average`) AS `inode 使用率`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' } BY `device`",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "chartType": "areaLine",
+            "colors": [
+              {
+                "color": "#2D8CF0",
+                "key": "网络流出",
+                "name": "网络流出"
+              },
+              {
+                "color": "#8BC34A",
+                "key": "网络流入",
+                "name": "网络流入"
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levels": [],
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [
+              {
+                "key": "入流量",
+                "name": "入流量",
+                "unit": "",
+                "units": [
+                  "bandWidth",
+                  "bps"
+                ]
+              },
+              {
+                "key": "出流量",
+                "name": "出流量",
+                "unit": "",
+                "units": [
+                  "bandWidth",
+                  "bps"
+                ]
+              }
+            ],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "网络"
+        },
+        "name": "网络出入流量",
+        "pos": {
+          "h": 8,
+          "i": "chrt_0625c9382b1c4ffd8d21c4ab2450e93c",
+          "w": 8,
+          "x": 0,
+          "y": 33
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "入流量",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "networkin_rate_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "ae2cae30-5657-11ec-b765-45adcc14e825",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "2a7c0ce0-bae6-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`networkin_rate_Average`) AS `入流量`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "出流量",
+              "code": "B",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "networkout_rate_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "ae2cae30-5657-11ec-b765-45adcc14e825",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "2ae4e0d0-bae6-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`networkout_rate_Average`) AS `出流量`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "chartType": "areaLine",
+            "colors": [
+              {
+                "color": "#19BE6B",
+                "key": "流入数据包",
+                "name": "流入数据包"
+              },
+              {
+                "color": "#F16B62",
+                "key": "流出数据包",
+                "name": "流出数据包"
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levels": [],
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [
+              {
+                "key": "入数据包",
+                "name": "入数据包",
+                "unit": "pps",
+                "units": []
+              },
+              {
+                "key": "出数据包",
+                "name": "出数据包",
+                "unit": "pps",
+                "units": []
+              }
+            ],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "网络"
+        },
+        "name": "网络出入数据包",
+        "pos": {
+          "h": 8,
+          "i": "chrt_4b4a118be1574211859bbffca2bd353d",
+          "w": 8,
+          "x": 8,
+          "y": 33
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "入数据包",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "networkin_packages_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": "",
+              "filters": [
+                {
+                  "id": "e50e0ed0-5657-11ec-b765-45adcc14e825",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "3c39ad20-bae6-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`networkin_packages_Average`) AS `入数据包`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          },
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "出数据包",
+              "code": "B",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "networkout_packages_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": "",
+              "filters": [
+                {
+                  "id": "e50e0ed0-5657-11ec-b765-45adcc14e825",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "3ca76310-bae6-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`networkout_packages_Average`) AS `出数据包`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      },
+      {
+        "extend": {
+          "fixedTime": "",
+          "settings": {
+            "chartType": "areaLine",
+            "colors": [
+              {
+                "color": "#e85ca0",
+                "key": "#{T.*}{\"state\":\"ESTABLISHED\"}",
+                "name": "#{T.*}{\"state\":\"ESTABLISHED\"}",
+                "tags": {
+                  "state": "ESTABLISHED"
+                }
+              },
+              {
+                "color": "#19BE6B",
+                "key": "#{T.*}{\"state\":\"NON_ESTABLISHED\"}",
+                "name": "#{T.*}{\"state\":\"NON_ESTABLISHED\"}",
+                "tags": {
+                  "state": "NON_ESTABLISHED"
+                }
+              },
+              {
+                "color": "#2D8CF0",
+                "key": "#{T.*}{\"state\":\"TCP_TOTAL\"}",
+                "name": "#{T.*}{\"state\":\"TCP_TOTAL\"}",
+                "tags": {
+                  "state": "TCP_TOTAL"
+                }
+              }
+            ],
+            "compareTitle": "",
+            "compareType": "",
+            "currentChartType": "sequence",
+            "density": "medium",
+            "fixedTime": "",
+            "isPercent": false,
+            "isTimeInterval": true,
+            "levels": [],
+            "openCompare": false,
+            "openStack": false,
+            "showFieldMapping": false,
+            "showLine": false,
+            "showTitle": true,
+            "stackType": "time",
+            "timeInterval": "default",
+            "titleDesc": "",
+            "units": [],
+            "xAxisShowType": "time"
+          }
+        },
+        "group": {
+          "name": "网络"
+        },
+        "name": "TCP 连接数",
+        "pos": {
+          "h": 8,
+          "i": "chrt_d3828a92755148818e78fae4a8f38c6a",
+          "w": 8,
+          "x": 16,
+          "y": 33
+        },
+        "queries": [
+          {
+            "color": "",
+            "datasource": "dataflux",
+            "name": "",
+            "qtype": "dql",
+            "query": {
+              "alias": "TCP 连接数",
+              "code": "A",
+              "dataSource": "aliyun_acs_ecs_dashboard",
+              "field": "net_tcpconnection_Average",
+              "fieldFunc": "avg",
+              "fieldType": "float",
+              "fill": null,
+              "filters": [
+                {
+                  "id": "0d354b30-5658-11ec-b765-45adcc14e825",
+                  "logic": "and",
+                  "name": "account_name",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{account_name}"
+                },
+                {
+                  "id": "4bc32f50-bae6-11ec-9cbf-47133739a47d",
+                  "logic": "and",
+                  "name": "InstanceName",
+                  "op": "=",
+                  "type": "",
+                  "value": "#{InstanceName}"
+                }
+              ],
+              "funcList": [],
+              "groupBy": [],
+              "groupByTime": "",
+              "namespace": "metric",
+              "q": "M::`aliyun_acs_ecs_dashboard`:(AVG(`net_tcpconnection_Average`) AS `TCP 连接数`) { `account_name` = '#{account_name}' and `InstanceName` = '#{InstanceName}' }",
+              "queryFuncs": [],
+              "type": "simple"
+            },
+            "type": "sequence",
+            "unit": ""
+          }
+        ],
+        "type": "sequence"
+      }
+    ],
+    "groups": [
+      "CPU/内存",
+      "磁盘",
+      "网络"
+    ],
+    "type": "template",
+    "vars": [
+      {
+        "code": "account_name",
+        "datasource": "dataflux",
+        "definition": {
+          "defaultVal": {
+            "label": "*",
+            "value": "re(`.*`)"
+          },
+          "field": "",
+          "metric": "",
+          "object": "",
+          "tag": "",
+          "value": "show_tag_value(from=['aliyun_acs_ecs_dashboard'], keyin=['account_name'])[5m]"
+        },
+        "hide": 0,
+        "name": "账号名称",
+        "seq": 0,
+        "type": "QUERY",
+        "valueSort": "default"
+      },
+      {
+        "code": "InstanceName",
+        "datasource": "dataflux",
+        "definition": {
+          "defaultVal": {
+            "label": "*",
+            "value": "re(`.*`)"
+          },
+          "field": "",
+          "metric": "",
+          "object": "",
+          "tag": "",
+          "value": "show_tag_value(from=['aliyun_acs_ecs_dashboard'], keyin=['InstanceName']){account_name='#{account_name}'}[5m]"
+        },
+        "hide": 0,
+        "name": "实例名称",
+        "seq": 1,
+        "type": "QUERY",
+        "valueSort": "default"
+      }
+    ]
+  },
+  "summary": "",
+  "tagInfo": [
+    {
+      "id": "tag_7f98a6a528e049848a0dc8d772a8a5e3",
+      "name": "Function"
+    },
+    {
+      "id": "tag_5bd733c65dc7464ca7c21674160c8572",
+      "name": "阿里云监控"
+    }
+  ],
+  "tags": [],
+  "thumbnail": "",
+  "title": "dd"
+}

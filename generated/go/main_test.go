@@ -1,21 +1,19 @@
-package main_test
+package main
 
 import (
+	_ "embed"
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
-	"github.com/golang/protobuf/jsonpb"
 	"github.com/stretchr/testify/require"
 	"github.com/tidwall/gjson"
-
-	monitorv1alpha1 "github.com/GuanceCloud/json-model/generated/go/monitor/v1alpha1"
 )
 
 const (
-	MonitorDir = "../../testdata/monitor"
+	MonitorDir   = "../../testdata/monitor"
+	DashboardDir = "../../testdata/dashboard"
 )
 
 func TestMonitor(t *testing.T) {
@@ -23,11 +21,21 @@ func TestMonitor(t *testing.T) {
 	require.NoError(t, err)
 	for _, f := range monitorFiles {
 		gjson.GetBytes(f.Content, "checkers").ForEach(func(key, value gjson.Result) bool {
-			var monitor monitorv1alpha1.Monitor
-			err := jsonpb.Unmarshal(strings.NewReader(value.Raw), &monitor)
+			monitor, err := ParseMonitor([]byte(value.Raw))
 			require.NoError(t, err, "failed to parse proto file %q: %s", f.Path, err)
+			require.NotEmpty(t, monitor)
 			return true
 		})
+	}
+}
+
+func TestDashboard(t *testing.T) {
+	dashboardFiles, err := loadJsonFiles(DashboardDir)
+	require.NoError(t, err)
+	for _, f := range dashboardFiles {
+		dashboard, err := ParseDashboard(f.Content)
+		require.NoError(t, err, "failed to parse proto file %q: %s", f.Path, err)
+		require.NotEmpty(t, dashboard)
 	}
 }
 
@@ -38,7 +46,6 @@ type fileInfo struct {
 
 // loadJsonFiles loads all json files in a directory
 func loadJsonFiles(dir string) ([]fileInfo, error) {
-
 	var files []fileInfo
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		// Skip directories
